@@ -1,0 +1,93 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriaSinAsignar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Asignar Materias</h2>
+    </div>
+</div>
+<div class="container">
+
+    <div class="row">
+        @using (Html.BeginForm("GetMateriaSinAsignar", "AlumnoMateria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group hidden">
+                @Html.LabelFor(model => model.Alumno.IdAlumno, new { @class = "control-label col-md-2 hidden" })
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.Alumno.IdAlumno, new { @class = "form-control hidden", @readonly = true })
+                    @Html.ValidationMessageFor(model => model.Alumno.IdAlumno)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Alumno.Nombre, new { @class = "control-label", @readonly = true })
+                    @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @readonly = true })
+                    @Html.ValidationMessageFor(model => model.Alumno.Nombre)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Alumno.ApellidoPaterno, "Apellido Paterno", new { @class = "control-label", @readonly = true })
+                @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(model => model.Alumno.ApellidoPaterno)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Alumno.ApellidoMaterno, "Apellido Materno", new { @class = "control-label", @readonly = true })
+                @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(model => model.Alumno.ApellidoMaterno)
+            </div>
+
+            <br>
+            <br />
+
+
+            <div class="row" style="padding-top:30px">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="text-center " scope="col">
+                                Nombre
+                            </th>
+                            <th class="text-left" scope="col">
+                                Costo
+                            </th>
+                            <th class="text-center">
+                                Selecciona
+                            </th>
+                        </tr>
+
+                        @foreach (ML.AlumnoMateria alumnomateria in Model.AlumnoMaterias)
+                        {
+                            <tr>
+                                <td class="text-center hidden">
+                                    @alumnomateria.Materia.IdMateria
+                                </td>
+
+                                <td class="text-left">
+                                    @alumnomateria.Materia.Nombre
+                                </td>
+                                <td class="text-left">
+                                    @alumnomateria.Materia.Costo
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" value="@alumnomateria.Materia.IdMateria" name="AlumnoMaterias">
+                                </td>
+                            </tr>
+
+                        }
+                    </table>
+                    <div class="form-group col-md-12">
+                        <div class="text-right">
+                            <input class="btn btn-success" type="submit" value="Agregar" />
+                            <a class="btn btn-danger" href="@Url.Action("GetMateriaAsignada", "AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno })"> Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

@@ -60,6 +60,15 @@
     <Compile Include="AlumnoGetById_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="AlumnoGetMateriasAsignadas_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlumnoMateria.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlumnoMateriaNoAsignada_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Conexion.cs" />
     <Compile Include="Materia.cs">
       <DependentUpon>Model1.tt</DependentUpon>

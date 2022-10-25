@@ -59,11 +59,6 @@ namespace BL
             return result;
         }
 
-        public static Result GetAll(ML.Alumno alumno)
-        {
-            throw new NotImplementedException();
-        }
-
         public static ML.Result Update(ML.Alumno alumno)
         {
             ML.Result result = new ML.Result();

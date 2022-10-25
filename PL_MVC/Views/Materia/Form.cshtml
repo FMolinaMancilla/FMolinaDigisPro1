@@ -1,0 +1,57 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Form</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Form", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "Please fix te following errors.")
+
+            <div class="hidden">
+                <div class="col-md-4 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.IdMateria)
+                    @Html.TextBoxFor(model => model.IdMateria, new { @class = "form-control", @id = "txtIdMateria" })
+                    @Html.ValidationMessageFor(model => model.IdMateria)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.Nombre)
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    @Html.LabelFor(model => model.Costo)
+                    @Html.TextBoxFor(model => model.Costo, new { @class = "form-control", @id = "txtCosto" })
+                    @Html.ValidationMessageFor(model => model.Costo)
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    @Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>

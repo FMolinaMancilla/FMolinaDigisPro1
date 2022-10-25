@@ -1,0 +1,90 @@
+﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriaAsignada";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Materias Asiganadas</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group hidden">
+            @Html.LabelFor(model => model.Alumno.IdAlumno, new { @class = "control-label col-md-2 hidden" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Alumno.IdAlumno, new { @class = "form-control hidden", @readonly = true })
+                @Html.ValidationMessageFor(model => model.Alumno.IdAlumno)
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.Alumno.Nombre, new { @class = "control-label", @readonly = true })
+            @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @readonly = true })
+            @Html.ValidationMessageFor(model => model.Alumno.Nombre)
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.Alumno.ApellidoPaterno, "Apellido Paterno", new { @class = "control-label", @readonly = true })
+            @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @readonly = true })
+            @Html.ValidationMessageFor(model => model.Alumno.ApellidoPaterno)
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.Alumno.ApellidoMaterno, "Apellido Materno", new { @class = "control-label", @readonly = true })
+            @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @readonly = true })
+            @Html.ValidationMessageFor(model => model.Alumno.ApellidoMaterno)
+        </div>
+    </div>
+</div>
+
+
+<br />
+
+<br />
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-success glyphicon glyphicon-plus " href="@Url.Action("GetMateriaSinAsignar", "AlumnoMateria", Model.Alumno)"></a>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding-top:30px">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-center" scope="col">
+                    Eliminar
+                </th>
+                <th class="text-center hidden" scope="col">
+                    IdAlumnoMateria
+                </th>
+                <th class="text-center hidden" scope="col">
+                    IdMateria
+                </th>
+                <th class="text-center" scope="col">
+                    Materia
+                </th>
+            </tr>
+            @foreach (ML.AlumnoMateria alumnoM in Model.AlumnoMaterias)
+            {
+                <tr>
+
+                    <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash " href="@Url.Action("Delete", "AlumnoMateria", new { IdAlumnoMateria = alumnoM.IdAlumnoMateria, IdAlumno = alumnoM.Alumno.IdAlumno })" onclick="return confirm('¿Estas seguro que deseas eliminar este registro?');"></a></td>
+
+                    <td class="text-center hidden">
+                        @alumnoM.IdAlumnoMateria
+                    </td>
+                    <td class="text-left hidden">
+                        @alumnoM.Materia.IdMateria
+                    </td>
+                    <td class="text-center">
+                        @alumnoM.Materia.Nombre
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -137,7 +137,7 @@ namespace BL
             return result;
         }
 
-        public static ML.Result DeleteEF(ML.Materia materia)
+        public static ML.Result Delete(ML.Materia materia)
         {
             ML.Result result = new ML.Result();
 

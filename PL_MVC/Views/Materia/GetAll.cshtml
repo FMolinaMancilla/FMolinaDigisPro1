@@ -11,52 +11,57 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h5>Selecciona una Materia para editarl o + para agregar una nueva...</h5>
+            <h5>Selecciona una Materia para editar o + para agregar una nueva...</h5>
         </div>
     </div>
 </div>
 
 
-<div class="container">
-    <div style="float:right">
-        @Html.ActionLink("+", "Form", "Materia", htmlAttributes: new { @class = "btn btn-success" })
+<div class="row">
+
+    @Html.ActionLink("Agregar", "Form", "Materia", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+
+<br>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "Please fix te following errors.")
+        }
+
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                @Html.ValidationSummary(true, "Please fix te following errors.")
-            }
-
-        </div>
-    </div>
+</div>
 
 
-    <table class="table table-bordered table-responsive">
-        <thead>
+
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+            <td>Nombre</td>
+            <td>Costo</td>
+            <td>Eliminar</td>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (ML.Materia materia in Model.Materias)
+        {
             <tr>
-                <td>Editar</td>
-                <td>Nombre</td>
-                <td>Costo</td>
-                <td>Eliminar</td>
+                <td class="text-center"><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "Materia", new { IdMateria = materia.IdMateria })"></a></td>
+                <td class="hidden">@materia.IdMateria</td>
+                <td>@materia.Nombre </td>
+                <td>@materia.Costo </td>
 
+                <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Materia", new { IdMateria = materia.IdMateria})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
             </tr>
-        </thead>
-
-        <tbody>
-            @foreach (ML.Materia materia in Model.Materias)
-            {
-                <tr>
-                    <td class="text-center"><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "Alumno", new { IdMateria = materia.IdMateria })"></a></td>
-                    <td class="hidden">@materia.IdMateria</td>
-                    <td>@materia.Nombre </td>
-                    <td>@materia.Costo </td>
-
-                    <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Alumno", new { IdMateria = materia.IdMateria})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
 </div>
 

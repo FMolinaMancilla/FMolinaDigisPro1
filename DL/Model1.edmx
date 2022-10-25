@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FMolinaDigiPro1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMolinaDigiPro1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="IdAlumno" />
@@ -14,6 +14,14 @@
           <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="AlumnoMateria">
+          <Key>
+            <PropertyRef Name="IdAlumnoMateria" />
+          </Key>
+          <Property Name="IdAlumnoMateria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAlumno" Type="int" />
+          <Property Name="IdMateria" Type="int" />
+        </EntityType>
         <EntityType Name="Materia">
           <Key>
             <PropertyRef Name="IdMateria" />
@@ -22,6 +30,30 @@
           <Property Name="Nombre" Type="varchar" MaxLength="50" />
           <Property Name="Costo" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
+        <Association Name="FK__AlumnoMat__IdAlu__239E4DCF">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+          <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="IdAlumno" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AlumnoMat__IdMat__24927208">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+          <End Role="AlumnoMateria" Type="Self.AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="AlumnoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
@@ -32,6 +64,19 @@
         </Function>
         <Function Name="AlumnoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="AlumnoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoGetMateriasAsignadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoMateriaAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoMateriaDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumnoMateria" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoMateriaNoAsignada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdAlumno" Type="int" Mode="In" />
         </Function>
         <Function Name="AlumnoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -58,10 +103,18 @@
         </Function>
         <EntityContainer Name="FMolinaDigiPro1ModelStoreContainer">
           <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlumnoMateria" EntityType="Self.AlumnoMateria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AlumnoMat__IdAlu__239E4DCF" Association="Self.FK__AlumnoMat__IdAlu__239E4DCF">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AlumnoMat__IdMat__24927208" Association="Self.FK__AlumnoMat__IdMat__24927208">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FMolinaDigiPro1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -73,6 +126,7 @@
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AlumnoMateria" Relationship="FMolinaDigiPro1Model.FK__AlumnoMat__IdAlu__239E4DCF" FromRole="Alumno" ToRole="AlumnoMateria" />
         </EntityType>
         <EntityType Name="Materia">
           <Key>
@@ -81,6 +135,7 @@
           <Property Name="IdMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Costo" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="AlumnoMateria" Relationship="FMolinaDigiPro1Model.FK__AlumnoMat__IdMat__24927208" FromRole="Materia" ToRole="AlumnoMateria" />
         </EntityType>
         <EntityContainer Name="FMolinaDigiPro1Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Alumno" EntityType="Self.Alumno" />
@@ -91,11 +146,11 @@
             <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="AlumnoDelete">
-            <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AlumnoGetAll" ReturnType="Collection(FMolinaDigiPro1Model.AlumnoGetAll_Result)" />
           <FunctionImport Name="AlumnoGetById" ReturnType="Collection(FMolinaDigiPro1Model.AlumnoGetById_Result)">
-            <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AlumnoUpdate">
             <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
@@ -108,16 +163,38 @@
             <Parameter Name="Costo" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="MateriaDelete">
-            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          <Parameter Name="IdMateria" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MateriaGetAll" ReturnType="Collection(FMolinaDigiPro1Model.MateriaGetAll_Result)" />
           <FunctionImport Name="MateriaGetById" ReturnType="Collection(FMolinaDigiPro1Model.MateriaGetById_Result)">
-            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          <Parameter Name="IdMateria" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MateriaUpdate">
             <Parameter Name="IdMateria" Mode="In" Type="Int32" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Costo" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <EntitySet Name="AlumnoMateria" EntityType="FMolinaDigiPro1Model.AlumnoMateria" />
+          <AssociationSet Name="FK__AlumnoMat__IdAlu__239E4DCF" Association="FMolinaDigiPro1Model.FK__AlumnoMat__IdAlu__239E4DCF">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AlumnoMat__IdMat__24927208" Association="FMolinaDigiPro1Model.FK__AlumnoMat__IdMat__24927208">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="AlumnoMateria" EntitySet="AlumnoMateria" />
+          </AssociationSet>
+          <FunctionImport Name="AlumnoMateriaAdd">
+            <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AlumnoMateriaNoAsignada" ReturnType="Collection(FMolinaDigiPro1Model.AlumnoMateriaNoAsignada_Result)">
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AlumnoGetMateriasAsignadas" ReturnType="Collection(FMolinaDigiPro1Model.AlumnoGetMateriasAsignadas_Result)">
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AlumnoMateriaDelete">
+            <Parameter Name="IdAlumnoMateria" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="AlumnoGetAll_Result">
@@ -141,6 +218,55 @@
           <Property Type="Int32" Name="IdMateria" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
           <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+        </ComplexType>
+        <EntityType Name="AlumnoMateria">
+          <Key>
+            <PropertyRef Name="IdAlumnoMateria" />
+          </Key>
+          <Property Name="IdAlumnoMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAlumno" Type="Int32" />
+          <Property Name="IdMateria" Type="Int32" />
+          <NavigationProperty Name="Alumno" Relationship="FMolinaDigiPro1Model.FK__AlumnoMat__IdAlu__239E4DCF" FromRole="AlumnoMateria" ToRole="Alumno" />
+          <NavigationProperty Name="Materia" Relationship="FMolinaDigiPro1Model.FK__AlumnoMat__IdMat__24927208" FromRole="AlumnoMateria" ToRole="Materia" />
+        </EntityType>
+        <Association Name="FK__AlumnoMat__IdAlu__239E4DCF">
+          <End Type="FMolinaDigiPro1Model.Alumno" Role="Alumno" Multiplicity="0..1" />
+          <End Type="FMolinaDigiPro1Model.AlumnoMateria" Role="AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="IdAlumno" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AlumnoMat__IdMat__24927208">
+          <End Type="FMolinaDigiPro1Model.Materia" Role="Materia" Multiplicity="0..1" />
+          <End Type="FMolinaDigiPro1Model.AlumnoMateria" Role="AlumnoMateria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="AlumnoMateria">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="AlumnoMateriaNoAsignada_Result">
+          <Property Type="Int32" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="0" />
+        </ComplexType>
+        <ComplexType Name="AlumnoGetMateriasAsignadas_Result">
+          <Property Type="Int32" Name="IdAlumnoMateria" Nullable="false" />
+          <Property Type="Int32" Name="IdAlumno" Nullable="false" />
+          <Property Type="Int32" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="AlumnoNombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MateriaNombre" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="MateriaCosto" Nullable="true" Precision="18" Scale="0" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -211,6 +337,40 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="MateriaUpdate" FunctionName="FMolinaDigiPro1Model.Store.MateriaUpdate" />
+          <EntitySetMapping Name="AlumnoMateria">
+            <EntityTypeMapping TypeName="FMolinaDigiPro1Model.AlumnoMateria">
+              <MappingFragment StoreEntitySet="AlumnoMateria">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="IdAlumnoMateria" ColumnName="IdAlumnoMateria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoMateriaAdd" FunctionName="FMolinaDigiPro1Model.Store.AlumnoMateriaAdd" />
+          <FunctionImportMapping FunctionImportName="AlumnoMateriaNoAsignada" FunctionName="FMolinaDigiPro1Model.Store.AlumnoMateriaNoAsignada">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FMolinaDigiPro1Model.AlumnoMateriaNoAsignada_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoGetMateriasAsignadas" FunctionName="FMolinaDigiPro1Model.Store.AlumnoGetMateriasAsignadas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FMolinaDigiPro1Model.AlumnoGetMateriasAsignadas_Result">
+                <ScalarProperty Name="IdAlumnoMateria" ColumnName="IdAlumnoMateria" />
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="AlumnoNombre" ColumnName="AlumnoNombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="MateriaNombre" ColumnName="MateriaNombre" />
+                <ScalarProperty Name="MateriaCosto" ColumnName="MateriaCosto" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoMateriaDelete" FunctionName="FMolinaDigiPro1Model.Store.AlumnoMateriaDelete" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,0 +1,51 @@
+﻿@model ML.Alumno
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Alumnos</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione un Alumno para asignar materias...</h5>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("GetAll", "Alumno", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "Please fix te following errors.")
+        }
+
+    </div>
+</div>
+
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+            <td>Nombre</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (ML.Alumno alumno in Model.Alumnos)
+        {
+            <tr>
+                <td class="text-center"><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("GetMateriaAsignada", "AlumnoMateria", new { IdAlumno = alumno.IdAlumno })"></a></td>
+                <td class="hidden">@alumno.IdAlumno</td>
+                <td>@alumno.Nombre @alumno.ApellidoPaterno @alumno.ApellidoMaterno</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
